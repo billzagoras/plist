@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  plist:
+    build: .
+    image: plist
+    command: ["/bin/appserver", "init"]
+    deploy:
+      mode: replicated
+      replicas: 1
+    env_file:
+      - .env
+    ports:
+      - ${APP_PORT}:${APP_PORT}
