@@ -2,20 +2,12 @@
 
 # Run api through the following steps
 
-# Dockerfile
+# 1. Docker Compose
 
-# create a local .env file in the working directory and define the port number
-# for ex. APP_PORT=54321
-docker build . -t plist
-docker run plist
-
-# Docker Compose
-
-# create a local .env file in the working directory and define the port number
-# for ex. APP_PORT=54321
+# define the port number in .env file, for ex. APP_PORT=54321
 docker compose up -d
 
-# Golang Executable
+# 2. Golang Executable
 make appserver
 ./appserver 65333
 
