@@ -24,7 +24,7 @@ func Round(timeObj1, timeObj2 *time.Time, period string) *errors.ErrResp {
 			*timeObj2 = time.Date(timeObj2.Year(), timeObj2.Month(), timeObj2.Day()-1, timeObj1.Hour(), 0, 0, 0, timeObj2.Location())
 		}
 		return nil
-	case "1m":
+	case "1mo":
 		// Last day of the month trick :)
 		*timeObj1 = time.Date(timeObj1.Year(), timeObj1.Month()+1, 0, timeObj1.Hour(), 0, 0, 0, timeObj1.Location())
 
@@ -55,7 +55,7 @@ func AddPeriod(timeObj *time.Time, period string) *errors.ErrResp {
 	case "1d":
 		*timeObj = timeObj.AddDate(0, 0, 1)
 		return nil
-	case "1m":
+	case "1mo":
 		*timeObj = time.Date(timeObj.Year(), timeObj.Month()+2, 0, timeObj.Hour(), 0, 0, 0, timeObj.Location())
 		return nil
 	case "1y":
