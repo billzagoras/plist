@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestPtListHappyPaths(t *testing.T) {
+func TestPtListHappyPathAthensTZ(t *testing.T) {
 	testcases := []struct {
 		name           string
 		input          []string
@@ -117,35 +117,6 @@ func TestPtListHappyPaths(t *testing.T) {
 			ptlist, err := srv.GetPtList(context.Background(), tc.input[0], tc.input[1], tc.input[2], tc.input[3])
 			if err != nil {
 				assert.NoError(t, errors.New(err.Desc))
-			}
-			require.Equal(t, tc.expectedOutput, ptlist)
-		})
-	}
-}
-
-func TestPtListUnhappyPaths(t *testing.T) {
-	testcases := []struct {
-		name           string
-		input          []string
-		expectedOutput *PtListResponse
-		expectedError  error
-	}{
-		{
-			name:           "Hour test",
-			input:          []string{"1h", "Europe/Aten", "", "20210715T123456Z"},
-			expectedOutput: nil,
-			expectedError:  errors.New("unknown time zone Europe/Aten"),
-		},
-	}
-
-	for _, tc := range testcases {
-		t.Run(tc.name, func(t *testing.T) {
-
-			srv := NewService()
-
-			ptlist, err := srv.GetPtList(context.Background(), tc.input[0], tc.input[1], tc.input[2], tc.input[3])
-			if err != nil {
-				assert.Error(t, errors.New(err.Desc))
 			}
 			require.Equal(t, tc.expectedOutput, ptlist)
 		})
@@ -501,6 +472,71 @@ func TestPtListHappyPathTokyoTZ(t *testing.T) {
 		expectedOutput *PtListResponse
 	}{
 		{
+			name:  "Hour test",
+			input: []string{"1h", "Asia/Tokyo", "20210214T204603Z", "20210215T123456Z"},
+			expectedOutput: &PtListResponse{
+				[]string{
+					"20210214T150000Z",
+					"20210214T160000Z",
+					"20210214T170000Z",
+					"20210214T180000Z",
+					"20210214T190000Z",
+					"20210214T200000Z",
+					"20210214T210000Z",
+					"20210214T220000Z",
+					"20210214T230000Z",
+					"20210215T000000Z",
+					"20210215T010000Z",
+					"20210215T020000Z",
+					"20210215T030000Z",
+					"20210215T040000Z",
+					"20210215T050000Z",
+					"20210215T060000Z",
+					"20210215T070000Z",
+					"20210215T080000Z",
+					"20210215T090000Z",
+					"20210215T100000Z",
+					"20210215T110000Z",
+					"20210215T120000Z"},
+			},
+		},
+		{
+			name:  "Day test",
+			input: []string{"1d", "Asia/Tokyo", "20210214T204603Z", "20210315T123456Z"},
+			expectedOutput: &PtListResponse{
+				[]string{
+					"20210214T150000Z",
+					"20210215T150000Z",
+					"20210216T150000Z",
+					"20210217T150000Z",
+					"20210218T150000Z",
+					"20210219T150000Z",
+					"20210220T150000Z",
+					"20210221T150000Z",
+					"20210222T150000Z",
+					"20210223T150000Z",
+					"20210224T150000Z",
+					"20210225T150000Z",
+					"20210226T150000Z",
+					"20210227T150000Z",
+					"20210228T150000Z",
+					"20210301T150000Z",
+					"20210302T150000Z",
+					"20210303T150000Z",
+					"20210304T150000Z",
+					"20210305T150000Z",
+					"20210306T150000Z",
+					"20210307T150000Z",
+					"20210308T150000Z",
+					"20210309T150000Z",
+					"20210310T150000Z",
+					"20210311T150000Z",
+					"20210312T150000Z",
+					"20210313T150000Z",
+					"20210314T150000Z"},
+			},
+		},
+		{
 			name:  "Month test",
 			input: []string{"1mo", "Asia/Tokyo", "20210214T204603Z", "20211115T123456Z"},
 			expectedOutput: &PtListResponse{
@@ -514,6 +550,19 @@ func TestPtListHappyPathTokyoTZ(t *testing.T) {
 					"20210831T150000Z",
 					"20210930T150000Z",
 					"20211031T150000Z"},
+			},
+		},
+		{
+			name:  "Year test",
+			input: []string{"1y", "Asia/Tokyo", "20210214T204603Z", "20271115T123456Z"},
+			expectedOutput: &PtListResponse{
+				[]string{
+					"20211231T150000Z",
+					"20221231T150000Z",
+					"20231231T150000Z",
+					"20241231T150000Z",
+					"20251231T150000Z",
+					"20261231T150000Z"},
 			},
 		},
 	}
@@ -532,12 +581,80 @@ func TestPtListHappyPathTokyoTZ(t *testing.T) {
 	}
 }
 
-func TestPtListHappyPathMexico_CityTZ(t *testing.T) {
+func TestPtListHappyPathMexicoCityTZ(t *testing.T) {
 	testcases := []struct {
 		name           string
 		input          []string
 		expectedOutput *PtListResponse
 	}{
+		{
+			name:  "Hour test",
+			input: []string{"1h", "America/Mexico_City", "20210214T024603Z", "20210215T053456Z"},
+			expectedOutput: &PtListResponse{
+				[]string{
+					"20210214T060000Z",
+					"20210214T070000Z",
+					"20210214T080000Z",
+					"20210214T090000Z",
+					"20210214T100000Z",
+					"20210214T110000Z",
+					"20210214T120000Z",
+					"20210214T130000Z",
+					"20210214T140000Z",
+					"20210214T150000Z",
+					"20210214T160000Z",
+					"20210214T170000Z",
+					"20210214T180000Z",
+					"20210214T190000Z",
+					"20210214T200000Z",
+					"20210214T210000Z",
+					"20210214T220000Z",
+					"20210214T230000Z",
+					"20210215T000000Z",
+					"20210215T010000Z",
+					"20210215T020000Z",
+					"20210215T030000Z",
+					"20210215T040000Z",
+					"20210215T050000Z",
+					"20210215T060000Z"},
+			},
+		},
+		{
+			name:  "Day test",
+			input: []string{"1d", "America/Mexico_City", "20210214T024603Z", "20210315T053456Z"},
+			expectedOutput: &PtListResponse{
+				[]string{
+					"20210214T060000Z",
+					"20210215T060000Z",
+					"20210216T060000Z",
+					"20210217T060000Z",
+					"20210218T060000Z",
+					"20210219T060000Z",
+					"20210220T060000Z",
+					"20210221T060000Z",
+					"20210222T060000Z",
+					"20210223T060000Z",
+					"20210224T060000Z",
+					"20210225T060000Z",
+					"20210226T060000Z",
+					"20210227T060000Z",
+					"20210228T060000Z",
+					"20210301T060000Z",
+					"20210302T060000Z",
+					"20210303T060000Z",
+					"20210304T060000Z",
+					"20210305T060000Z",
+					"20210306T060000Z",
+					"20210307T060000Z",
+					"20210308T060000Z",
+					"20210309T060000Z",
+					"20210310T060000Z",
+					"20210311T060000Z",
+					"20210312T060000Z",
+					"20210313T060000Z",
+					"20210314T060000Z"},
+			},
+		},
 		{
 			name:  "Month test",
 			input: []string{"1mo", "America/Mexico_City", "20210214T024603Z", "20211115T053456Z"},
@@ -553,6 +670,19 @@ func TestPtListHappyPathMexico_CityTZ(t *testing.T) {
 					"20210930T050000Z"},
 			},
 		},
+		{
+			name:  "Year test",
+			input: []string{"1y", "America/Mexico_City", "20210214T024603Z", "20271115T053456Z"},
+			expectedOutput: &PtListResponse{
+				[]string{
+					"20211231T060000Z",
+					"20221231T060000Z",
+					"20231231T060000Z",
+					"20241231T060000Z",
+					"20251231T060000Z",
+					"20261231T060000Z"},
+			},
+		},
 	}
 
 	for _, tc := range testcases {
@@ -563,6 +693,35 @@ func TestPtListHappyPathMexico_CityTZ(t *testing.T) {
 			ptlist, err := srv.GetPtList(context.Background(), tc.input[0], tc.input[1], tc.input[2], tc.input[3])
 			if err != nil {
 				assert.NoError(t, errors.New(err.Desc))
+			}
+			require.Equal(t, tc.expectedOutput, ptlist)
+		})
+	}
+}
+
+func TestPtListUnhappyPath(t *testing.T) {
+	testcases := []struct {
+		name           string
+		input          []string
+		expectedOutput *PtListResponse
+		expectedError  error
+	}{
+		{
+			name:           "Hour test",
+			input:          []string{"1h", "Europe/Aten", "", "20210715T123456Z"},
+			expectedOutput: nil,
+			expectedError:  errors.New("unknown time zone Europe/Aten"),
+		},
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+
+			srv := NewService()
+
+			ptlist, err := srv.GetPtList(context.Background(), tc.input[0], tc.input[1], tc.input[2], tc.input[3])
+			if err != nil {
+				assert.Error(t, errors.New(err.Desc))
 			}
 			require.Equal(t, tc.expectedOutput, ptlist)
 		})
