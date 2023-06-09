@@ -67,6 +67,17 @@ func AddPeriod(timeObj *time.Time, period string) *errors.ErrResp {
 	return errors.GetError(errors.AddingPeriodError)
 }
 
+func NormalizeTime(timeObjLocal, timeObjUTC time.Time) (time.Time, time.Time) {
+	if timeObjLocal.Format("20060102") > timeObjUTC.Format("20060102") {
+		timeObjLocal = time.Date(timeObjLocal.Year(), timeObjLocal.Month(), timeObjLocal.Day(), 0, 0, 0, 0, timeObjLocal.Location())
+		timeObjUTC = timeObjLocal.UTC()
+	} else if timeObjLocal.Format("20060102") < timeObjUTC.Format("20060102") {
+		timeObjLocal = time.Date(timeObjLocal.Year(), timeObjLocal.Month(), timeObjLocal.Day(), 24, 0, 0, 0, timeObjLocal.Location())
+		timeObjUTC = timeObjLocal.UTC()
+	}
+	return timeObjLocal, timeObjUTC
+}
+
 // Checks for errors.
 func CheckErr(err interface{}) bool {
 	if err != nil && !reflect.ValueOf(err).IsNil() {
